@@ -17,6 +17,7 @@
 argmax:
     # Prologue
     addi t0, x0, 0
+    addi t4, x0, 0
     lw t1, 0(a0)
 
 loop_start:
@@ -31,11 +32,14 @@ loop_continue:
     lw t2, 0(t3)
     bge t1, t2, loop_continue
     addi t1, t2, 0
+    addi t4, t0, 0
+    
     jal x0 loop_continue
 
 loop_end:
     # Epilogue
-    addi a0, t1, 0
+    addi a0, t4, 0
+    addi a0, a0, -1
 
     ret
 

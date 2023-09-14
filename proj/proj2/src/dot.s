@@ -61,9 +61,9 @@ loop_end:
     ret
 
 exception1:
-    addi a1, x0, 75
+    li a1, 75
     j exit2
 
 exception2:
-    addi a1, x0, 76
+    li a1, 76
     j exit2
