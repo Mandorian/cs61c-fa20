@@ -16,33 +16,37 @@
 # =================================================================
 argmax:
     # Prologue
+    bge x0, a1, exception77
+
+    addi sp, sp, -8
+    sw s0, 0(sp)
+    sw s1, 4(sp)
+
+    add s0, a0, x0
+    addi s1, x0, 0
     addi t0, x0, 0
-    addi t4, x0, 0
-    lw t1, 0(a0)
 
 loop_start:
-    bge x0, a1, exception
-
-loop_continue:
     beq t0, a1, loop_end
-    slli t2, t0, 2
-    add t3, a0, t2
+    slli t1, t0, 2
+    add t1, s0, t1
+    lw t1, 0(t1)
     addi t0, t0, 1
 
-    lw t2, 0(t3)
-    bge t1, t2, loop_continue
-    addi t1, t2, 0
-    addi t4, t0, 0
-    
-    jal x0 loop_continue
+    bge s1, t1, loop_start
+    add s1, t1, x0
+    add a0, t0, x0
+    addi a0, a0, -1
+
+    j loop_start
 
 loop_end:
     # Epilogue
-    addi a0, t4, 0
-    addi a0, a0, -1
-
+    lw s0, 0(sp)
+    lw s1, 4(sp)
+    addi sp, sp, 8
     ret
 
-exception:
+exception77:
     li a1, 77
     j exit2

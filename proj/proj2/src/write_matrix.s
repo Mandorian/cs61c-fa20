@@ -54,6 +54,8 @@ write:
     sw a3, 8(sp)
     add a2, sp, x0
     jal fwrite
+    lw s2, 0(sp)
+    lw s3, 4(sp)
     lw a3, 8(sp)
     addi sp, sp, 12
     blt a0, a3, exception94
@@ -85,10 +87,6 @@ close:
     # Epilogue
 
     ret
-
-exception88:
-    li a1, 88
-    j exit2
 
 exception93:
     li a1, 93

@@ -49,6 +49,14 @@ class TestRelu(TestCase):
         # generate the `assembly/TestRelu_test_simple.s` file and run it through venus
         t.execute()
 
+    def test_exception78(self):
+        t = AssemblyTest(self, "relu.s")
+        array0 = t.array([])
+        t.input_array("a0", array0)
+        t.input_scalar("a1", len(array0))
+        t.call("relu")
+        t.execute(code=78)
+
     @classmethod
     def tearDownClass(cls):
         print_coverage("relu.s", verbose=False)
@@ -73,6 +81,14 @@ class TestArgmax(TestCase):
         # TODO
         # generate the `assembly/TestArgmax_test_simple.s` file and run it through venus
         t.execute()
+
+    def test_exception77(self):
+        t = AssemblyTest(self, "argmax.s")
+        array0 = t.array([])
+        t.input_array("a0", array0)
+        t.input_scalar("a1", len(array0))
+        t.call("argmax")
+        t.execute(code=77)
 
     @classmethod
     def tearDownClass(cls):
@@ -340,6 +356,7 @@ class TestClassify(TestCase):
         ref_file = "outputs/test_basic_main/reference0.bin"
         args = ["inputs/simple0/bin/m0.bin", "inputs/simple0/bin/m1.bin",
                 "inputs/simple0/bin/inputs/input0.bin", out_file]
+        t.input_scalar("a2", 0)
         # call classify function
         t.call("classify")
         # generate assembly and pass program arguments directly to venus
@@ -373,3 +390,4 @@ class TestMain(TestCase):
 
     def test1(self):
         self.run_main("inputs/simple1/bin", "1", "1")
+

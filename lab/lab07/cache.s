@@ -21,18 +21,18 @@ array:	.word	2048		# max array size specified in BYTES (DO NOT CHANGE)
 .text
 ##################################################################################################
 # You MAY change the code below this section
-main:	li	a0, 256		# array size in BYTES (power of 2 < array size)
-	li	a1, 2		# step size  (power of 2 > 0)
-	li	a2, 1		# rep count  (int > 0)
-	li	a3, 1		# 0 - option 0, 1 - option 1
+    main:	li	a0, 256		# array size in BYTES (power of 2 < array size)
+    li	a1, 2		# step size  (power of 2 > 0)
+li	a2, 1		# rep count  (int > 0)
+    li	a3, 1		# 0 - option 0, 1 - option 1
 # You MAY change the code above this section
 ##################################################################################################
 
-	jal	accessWords	# lw/sw
-	#jal	accessBytes	# lb/sb
+    jal	accessWords	# lw/sw
+#jal	accessBytes	# lb/sb
 
-	li	a0,10		# exit
-	ecall
+    li	a0,10		# exit
+    ecall
 
 # SUMMARY OF REGISTER USE:
 #  a0 = array size in bytes
@@ -42,48 +42,48 @@ main:	li	a0, 256		# array size in BYTES (power of 2 < array size)
 #  s0 = moving array ptr
 #  s1 = array limit (ptr)
 
-accessWords:
-	la	s0, array		# ptr to array
-	add	s1, s0, a0		# hardcode array limit (ptr)
-	slli	t1, a1, 2		# multiply stepsize by 4 because WORDS
-wordLoop:
-	beq	a3, zero,  wordZero
+    accessWords:
+    la	s0, array		# ptr to array
+add	s1, s0, a0		# hardcode array limit (ptr)
+    slli	t1, a1, 2		# multiply stepsize by 4 because WORDS
+    wordLoop:
+    beq	a3, zero,  wordZero
 
-	lw	t0, 0(s0)		# array[index/4]++
-	addi	t0, t0, 1
-	sw	t0, 0(s0)
-	j	wordCheck
+    lw	t0, 0(s0)		# array[index/4]++
+    addi	t0, t0, 1
+sw	t0, 0(s0)
+    j	wordCheck
 
-wordZero:
-	sw	zero,  0(s0)		# array[index/4] = 0
+    wordZero:
+    sw	zero,  0(s0)		# array[index/4] = 0
 
-wordCheck:
-	add	s0, s0, t1		# increment ptr
-	blt	s0, s1, wordLoop	# inner loop done?
+    wordCheck:
+    add	s0, s0, t1		# increment ptr
+    blt	s0, s1, wordLoop	# inner loop done?
 
-	addi	a2, a2, -1
-	bgtz	a2, accessWords	# outer loop done?
-	jr	ra
+    addi	a2, a2, -1
+    bgtz	a2, accessWords	# outer loop done?
+    jr	ra
 
 
-accessBytes:
-	la	s0, array		# ptr to array
-	add	s1, s0, a0		# hardcode array limit (ptr)
-byteLoop:
-	beq	a3, zero,  byteZero
+    accessBytes:
+    la	s0, array		# ptr to array
+add	s1, s0, a0		# hardcode array limit (ptr)
+    byteLoop:
+    beq	a3, zero,  byteZero
 
-	lbu	t0, 0(s0)		# array[index]++
-	addi	t0, t0, 1
-	sb	t0, 0(s0)
-	j	byteCheck
+    lbu	t0, 0(s0)		# array[index]++
+    addi	t0, t0, 1
+sb	t0, 0(s0)
+    j	byteCheck
 
-byteZero:
-	sb	zero,  0(s0)		# array[index] = 0
+    byteZero:
+    sb	zero,  0(s0)		# array[index] = 0
 
-byteCheck:
-	add	s0, s0, a1		# increment ptr
-	blt	s0, s1, byteLoop	# inner loop done?
+    byteCheck:
+    add	s0, s0, a1		# increment ptr
+    blt	s0, s1, byteLoop	# inner loop done?
 
-	addi	a2, a2, -1
-	bgtz	a2, accessBytes	# outer loop done?
-	jr	ra
+    addi	a2, a2, -1
+    bgtz	a2, accessBytes	# outer loop done?
+    jr	ra
